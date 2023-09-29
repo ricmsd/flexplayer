@@ -15,6 +15,8 @@
             (click)="video.paused ? video.play() : video.pause()">
             <i class="pi pi-play" [ngClass]="{'hidden': !video.paused}"></i>
             <i class="pi pi-pause" [ngClass]="{'hidden': video.paused}"></i>
+            <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-text" class="button-remove"
+              (onClick)="onClockRemoveButton($event, videoFile)"></p-button>
             <div class="video-controls-slider-minivideo">
               <video #miniVideo [src]="videoFile.url" [ngStyle]="{'opacity': slider.dragging ? '1' : '0'}"></video>
             </div>

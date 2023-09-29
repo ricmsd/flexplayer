@@ -181,4 +181,9 @@ export class AppComponent implements OnInit {
     const sec = (duration % 3600) % 60;
     return `0${hour}`.slice(-2) + ':' + `0${min}`.slice(-2) + ':' + `0${sec}`.slice(-2);
   }
+  public onClockRemoveButton(event: any, videoFile: VideoFile): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.videoFiles = this.videoFiles.filter(i => i !== videoFile);
+  }
 }
