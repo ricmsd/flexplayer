@@ -11,6 +11,7 @@ interface VideoFile {
   url: string;
   currentTime: number;
   duration: number;
+  playing: boolean;
 }
 
 @Component({
@@ -65,7 +66,8 @@ export class AppComponent implements OnInit {
     this.videoFiles.push({
       url: url,
       currentTime: 0,
-      duration: 0
+      duration: 0,
+      playing: false
     });
   }
 
@@ -140,6 +142,7 @@ export class AppComponent implements OnInit {
 
   public onLoadedMetadata(video: HTMLVideoElement, videoFile: VideoFile): void {
     videoFile.duration = video.duration;
+    video.currentTime = videoFile.currentTime;
   }
   public onChangeTimeSlider(slider: Slider, video: HTMLVideoElement, miniVideo: HTMLVideoElement, videoFile: VideoFile): void {
     if (!slider.dragging) {
