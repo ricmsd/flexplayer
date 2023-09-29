@@ -1,21 +1,26 @@
 <div class="app-body">
-  <ng-container *ngFor="let videoFile of videoFiles">
-    <div class="video-container" [style.width]="videoContainerWidth">
-      <video #video [src]="videoFile.url" (loadedmetadata)="onLoadedMetadata(video, videoFile)"
-        (timeupdate)="onVideoTimeUpdate(slider, video, videoFile)"></video>
-      <div class="video-controls-button"
-        (click)="video.paused ? video.play() : video.pause()">
-        <i class="pi pi-play" [ngClass]="{'hidden': !video.paused}"></i>
-        <i class="pi pi-pause" [ngClass]="{'hidden': video.paused}"></i>
-        <div class="video-controls-slider-minivideo">
-          <video #miniVideo [src]="videoFile.url" [ngStyle]="{'opacity': slider.dragging ? '1' : '0'}"></video>
+  <ng-container *ngFor="let rowNumber of getAllRowNumberArray()">
+    <div class="video-row">
+      <ng-container *ngFor="let videoFile of getVideoFiles(rowNumber); last as isLast">
+        <div class="video-container" [ngStyle]="{'width': getVideoContainerWidth(isLast), 'height': videoContainerHeight}">
+          <video #video [src]="videoFile.url" (loadedmetadata)="onLoadedMetadata(video, videoFile)"
+            (timeupdate)="onVideoTimeUpdate(null, video, videoFile)"
+            [ngStyle]="{'width': getVideoWidth(isLast), 'height': videoHeight}"></video>
+          <div class="video-controls-button"
+            (click)="video.paused ? video.play() : video.pause()">
+            <i class="pi pi-play" [ngClass]="{'hidden': !video.paused}"></i>
+            <i class="pi pi-pause" [ngClass]="{'hidden': video.paused}"></i>
+            <div class="video-controls-slider-minivideo">
+              <video #miniVideo [src]="videoFile.url" [ngStyle]="{'opacity': slider.dragging ? '1' : '0'}"></video>
+            </div>
+          </div>
+          <div class="video-controls-slider">
+            <p-slider #slider [(ngModel)]="videoFile.currentTime" [max]="videoFile.duration"
+              (onChange)="onChangeTimeSlider(slider, video, miniVideo, videoFile)"
+              (onSlideEnd)="onTimeSlideEnd(slider, video, miniVideo, videoFile)"></p-slider>
+          </div>
         </div>
-      </div>
-      <div class="video-controls-slider">
-        <p-slider #slider [(ngModel)]="videoFile.currentTime" [max]="videoFile.duration"
-          (onChange)="onChangeTimeSlider(slider, video, miniVideo, videoFile)"
-          (onSlideEnd)="onTimeSlideEnd(slider, video, miniVideo, videoFile)"></p-slider>
-      </div>
+      </ng-container>
     </div>
   </ng-container>
 </div>
