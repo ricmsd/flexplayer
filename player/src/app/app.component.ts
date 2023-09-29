@@ -48,9 +48,6 @@ export class AppComponent implements OnInit {
 
   constructor(private ngZone: NgZone) {
     this.updateVideoContainerWidth();
-    for (let i = 0; i < 10; i++) {
-      this.addNewVideoFile('file://c:/workspace/tmp/test.mp4');
-    }
   }
 
   ngOnInit(): void {

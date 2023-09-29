@@ -39,9 +39,11 @@
     
                 i {
                     position: absolute;
-                    opacity: 0;
                     color: var(--primary-color);
                     font-size: 2rem;
+
+                    transition: all 0.5s;
+                    opacity: 0;
                 }
         
                 &:hover i {
@@ -72,10 +74,16 @@
                 width: 100%;
                 height: 2rem; // because slider-handle 1.143rem x 1.143rem
                 background-color: transparent;
+
+                transition: all 0.5s;
+                opacity: 0;
     
                 p-slider {
                     width: calc(100% - 2rem);
                 }
+            }
+            &:hover .video-controls-slider {
+                opacity: 1;
             }
         }
     }
