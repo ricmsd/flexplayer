@@ -72,14 +72,26 @@ export class AppComponent implements OnInit {
   public async onDrop(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
+
+    if (!event.dataTransfer?.files) {
+      return;
+    }
+
+    // 'await' will invalidate the contents of dataTransfer.
+    // Retrieve the required information (path, type) in advance.
+    const paths: string[] = [];
     const typeChecker = <HTMLVideoElement>document.createElement('video');
-    for (let i = 0; i < (event.dataTransfer?.files?.length||0); i++) {
+    for (let i = 0; i < event.dataTransfer.files.length; i++) {
       const file: File = <File>event.dataTransfer?.files[i];
       const path = (<any>file).path;
       if (typeChecker.canPlayType(file.type) === '') {
         console.info(`can't play this file: ${path}`);
         continue;
       }
+      paths.push(path);
+    }
+
+    for (let path of paths) {
       const url = await window.electronAPI.pathToFileURL(path);
       this.addNewVideoFile(url);
     }
