@@ -12,6 +12,7 @@ interface VideoFile {
   currentTime: number;
   duration: number;
   playing: boolean;
+  is169: boolean;
 }
 
 @Component({
@@ -47,7 +48,7 @@ export class AppComponent implements OnInit {
   }
 
   constructor(private ngZone: NgZone) {
-    this.updateVideoContainerWidth();
+    this.resizeVideoContainer();
   }
 
   ngOnInit(): void {
@@ -64,7 +65,8 @@ export class AppComponent implements OnInit {
       url: url,
       currentTime: 0,
       duration: 0,
-      playing: false
+      playing: false,
+      is169: true,
     });
   }
 
@@ -107,16 +109,16 @@ export class AppComponent implements OnInit {
         this.videoContainerCount = Math.min(
           this.VIDEO_CONTAINER_COUNT_MAX, this.videoContainerCount + this.VIDEO_CONTAINER_COUNT_STEP);
       }
-      this.updateVideoContainerWidth();
+      this.resizeVideoContainer();
     }
   }
 
   @HostListener('window:resize', ['$event'])
   public onResizeWindow(event: any): void {
-    this.updateVideoContainerWidth();
+    this.resizeVideoContainer();
   }
 
-  private updateVideoContainerWidth(): void {
+  private resizeVideoContainer(): void {
     this.clientWidth = document.body.clientWidth;
     const width = this.clientWidth / this.videoContainerCount;
     const height = (width / 16) * 9;
@@ -151,13 +153,16 @@ export class AppComponent implements OnInit {
 
   public onLoadedMetadata(video: HTMLVideoElement, videoFile: VideoFile): void {
     videoFile.duration = video.duration;
+    videoFile.is169 = (video.videoWidth / 16) == (video.videoHeight / 9);
+
+    // Recovery of currentTime when recreating the DOM.
     video.currentTime = videoFile.currentTime;
   }
   public onChangeTimeSlider(slider: Slider, video: HTMLVideoElement, miniVideo: HTMLVideoElement, videoFile: VideoFile): void {
     if (!slider.dragging) {
       return;
     }
-    // very slow...
+    // very slow...? currentTime are not reflected immediately.
     miniVideo.currentTime = videoFile.currentTime;
   }
   public onTimeSlideEnd(slider: Slider, video: HTMLVideoElement, miniVideo: HTMLVideoElement, videoFile: VideoFile): void {

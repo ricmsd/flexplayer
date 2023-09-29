@@ -10,7 +10,7 @@
             (play)="videoFile.playing = true"
             (pause)="videoFile.playing = false"
             (ended)="videoFile.playing = false"
-            [ngStyle]="{'width': getVideoWidth(isLast), 'height': videoHeight, 'opacity': slider.dragging ? '0.5' : '1'}"></video>
+            [ngStyle]="{'width': getVideoWidth(isLast), 'height': videoHeight, 'opacity': slider.dragging ? '0.5' : '1', 'object-fit': videoFile.is169 ? 'fill' : 'contain'}"></video>
           <div class="video-controls-button"
             (click)="video.paused ? video.play() : video.pause()">
             <i class="pi pi-play" [ngClass]="{'hidden': !video.paused}"></i>
