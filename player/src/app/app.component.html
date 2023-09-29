@@ -18,6 +18,7 @@
             <div class="video-controls-slider-minivideo">
               <video #miniVideo [src]="videoFile.url" [ngStyle]="{'opacity': slider.dragging ? '1' : '0'}"></video>
             </div>
+            <div class="video-controls-slider-time" [ngStyle]="{'opacity': slider.dragging ? '1' : '0'}">{{getHHMMSS(miniVideo.currentTime)}}</div>
           </div>
           <div class="video-controls-slider">
             <p-slider #slider [(ngModel)]="videoFile.currentTime" [max]="videoFile.duration"

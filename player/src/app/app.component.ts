@@ -169,4 +169,11 @@ export class AppComponent implements OnInit {
     }
     videoFile.currentTime = video.currentTime;
   }
+  public getHHMMSS(duration: number): string {
+    duration = Math.floor(duration);
+    const hour = Math.floor(duration / 3600);
+    const min = Math.floor((duration % 3600) / 60);
+    const sec = (duration % 3600) % 60;
+    return `0${hour}`.slice(-2) + ':' + `0${min}`.slice(-2) + ':' + `0${sec}`.slice(-2);
+  }
 }

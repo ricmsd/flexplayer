@@ -30,6 +30,7 @@
             }
             .video-controls-button {
                 display: flex;
+                flex-direction: column;
                 justify-content: center;
                 align-items: center;
                 position: absolute;
@@ -51,7 +52,6 @@
                 }
     
                 .video-controls-slider-minivideo {
-                    position: absolute;
                     max-width: 50%;
                     max-height: 50%;
                     aspect-ratio: 16/9;
@@ -59,11 +59,21 @@
                     video {
                         width: 100%;
                         height: 100%;
-                        object-fit: fill;
                         border-radius: 2px;
                         border: 2px solid white;
+                        background-color: black;
                     }
                 }
+                .video-controls-slider-time {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    max-width: 50%;
+                    color: white;
+                    font-family: monospace;
+                    font-size: 1.25rem;
+                    margin-top: 0.5rem;
+                 }
             }
             .video-controls-slider {
                 display: flex;
