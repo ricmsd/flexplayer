@@ -5,12 +5,12 @@
         <div class="video-container" [ngStyle]="{'width': getVideoContainerWidth(isLast), 'height': videoContainerHeight}">
           <video #video [src]="videoFile.url"
             (loadedmetadata)="onLoadedMetadata(video, videoFile)"
-            (timeupdate)="onVideoTimeUpdate(null, video, videoFile)"
+            (timeupdate)="onVideoTimeUpdate(slider, video, videoFile)"
             (canplay)="videoFile.playing ? video.play() : video.pause()"
             (play)="videoFile.playing = true"
             (pause)="videoFile.playing = false"
             (ended)="videoFile.playing = false"
-            [ngStyle]="{'width': getVideoWidth(isLast), 'height': videoHeight}"></video>
+            [ngStyle]="{'width': getVideoWidth(isLast), 'height': videoHeight, 'opacity': slider.dragging ? '0.5' : '1'}"></video>
           <div class="video-controls-button"
             (click)="video.paused ? video.play() : video.pause()">
             <i class="pi pi-play" [ngClass]="{'hidden': !video.paused}"></i>

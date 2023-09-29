@@ -154,8 +154,8 @@ export class AppComponent implements OnInit {
   public onTimeSlideEnd(slider: Slider, video: HTMLVideoElement, miniVideo: HTMLVideoElement, videoFile: VideoFile): void {
     video.currentTime = videoFile.currentTime;
   }
-  public onVideoTimeUpdate(slider: Slider | null, video: HTMLVideoElement, videoFile: VideoFile): void {
-    if (slider?.dragging) {
+  public onVideoTimeUpdate(slider: Slider, video: HTMLVideoElement, videoFile: VideoFile): void {
+    if (slider.dragging) {
       return;
     }
     videoFile.currentTime = video.currentTime;
