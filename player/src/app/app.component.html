@@ -37,7 +37,7 @@
               </div>
               <div class="video-container-controls-loop">
                 <p-button icon="bi-repeat" styleClass="p-button-rounded p-button-text" class="button-loop"
-                  (onClick)="video.loop = video.loop ? false : true"></p-button>
+                  (onClick)="videoFile.loop = video.loop = !video.loop"></p-button>
                 <i *ngIf="!video.loop" class="bi-slash-lg icon-slash"></i>
               </div>
             </div>

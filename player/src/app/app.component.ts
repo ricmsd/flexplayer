@@ -13,6 +13,12 @@ interface VideoFile {
   duration: number;
   playing: boolean;
   is169: boolean;
+  loop: boolean;
+}
+
+interface PlayerStatus {
+  videoContainerCount: number;
+  videoFiles: VideoFile[];
 }
 
 @Component({
@@ -21,7 +27,9 @@ interface VideoFile {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  public videoContainerCount = 3; // px
+  private readonly STORAGE_KEY_PLAYER_STATUS = 'player-status-0.0.0';
+
+  public videoContainerCount = 3;
   private readonly VIDEO_CONTAINER_COUNT_MIN = 1;
   private readonly VIDEO_CONTAINER_COUNT_MAX = 10;
   private readonly VIDEO_CONTAINER_COUNT_STEP = 1;
@@ -48,10 +56,44 @@ export class AppComponent implements OnInit {
   }
 
   constructor(private ngZone: NgZone) {
+    this.loadPlayerStatus();
     this.resizeVideoContainer();
   }
 
   ngOnInit(): void {
+  }
+
+  private getDefaultPlayerStatus(): PlayerStatus {
+    return {
+      videoContainerCount: 3,
+      videoFiles: [],
+    };
+  }
+  private loadPlayerStatus(): void {
+    let status: PlayerStatus;
+    const value = localStorage.getItem(this.STORAGE_KEY_PLAYER_STATUS);
+    if (value) {
+      try {
+        status = JSON.parse(value);
+      } catch(e) {
+        status = this.getDefaultPlayerStatus();
+      }
+    } else {
+      status = this.getDefaultPlayerStatus();
+    }
+
+    this.videoContainerCount = status.videoContainerCount;
+    this.videoFiles = status.videoFiles;
+    this.videoFiles.forEach(i => {
+      i.playing = false; // Stop at start-up.
+    });
+  }
+  private savePlayerStatus(): void {
+    const status: PlayerStatus = {
+      videoContainerCount: this.videoContainerCount,
+      videoFiles: this.videoFiles
+    };
+    localStorage.setItem(this.STORAGE_KEY_PLAYER_STATUS, JSON.stringify(status));
   }
 
   @HostListener('dragover', ['$event'])
@@ -67,7 +109,9 @@ export class AppComponent implements OnInit {
       duration: 0,
       playing: false,
       is169: true,
+      loop: true,
     });
+    this.savePlayerStatus();
   }
 
   @HostListener('drop', ['$event'])
@@ -110,6 +154,7 @@ export class AppComponent implements OnInit {
           this.VIDEO_CONTAINER_COUNT_MAX, this.videoContainerCount + this.VIDEO_CONTAINER_COUNT_STEP);
       }
       this.resizeVideoContainer();
+      this.savePlayerStatus();
     }
   }
 
@@ -155,8 +200,9 @@ export class AppComponent implements OnInit {
     videoFile.duration = video.duration;
     videoFile.is169 = (video.videoWidth / 16) == (video.videoHeight / 9);
 
-    // Recovery of currentTime when recreating the DOM.
+    // Recovery of currentTime, etc. when recreating the DOM.
     video.currentTime = videoFile.currentTime;
+    video.loop = videoFile.loop;
   }
   public onChangeTimeSlider(slider: Slider, video: HTMLVideoElement, miniVideo: HTMLVideoElement, videoFile: VideoFile): void {
     if (!slider.dragging) {
@@ -185,5 +231,6 @@ export class AppComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     this.videoFiles = this.videoFiles.filter(i => i !== videoFile);
+    this.savePlayerStatus();
   }
 }
