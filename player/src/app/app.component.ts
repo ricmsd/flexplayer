@@ -241,7 +241,7 @@ export class AppComponent implements OnInit {
   }
 
   public updateTitle(): void {
-    let title = 'flexplayer';
+    let title = 'FlexPlayer';
     if (this.videoFiles.length > 0) {
       const playing = this.videoFiles.filter(i => i.playing).length;
       const error = this.videoFiles.filter(i => i.error).length;
