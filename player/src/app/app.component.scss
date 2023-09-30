@@ -23,38 +23,86 @@
         .video-container {
             position: relative;
             background-color: black;
+        }
     
+        .video-container {
             > video {
                 background-color: black;
             }
-            .video-controls-button {
+            &.slider-dragging {
+                > video {
+                    opacity: 0.5;
+                }
+            }
+            &.aspect-16-9 {
+                > video {
+                    object-fit: fill;
+                }
+            }
+        }
+
+        .video-container {
+            .video-container-controls-overlay {
+                position: absolute;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                visibility: hidden;
+
+                .video-container-header {
+                    height: 48px;
+                    display: flex;
+
+                    .button-remove {
+                        margin-left: auto;
+                    }
+                }
+                .video-container-body {
+                    flex-grow: 1;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    .video-container-controls-buttons {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
+                .video-container-footer {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    bottom: 0;
+                    width: 100%;
+                    height: 2rem; // because slider-handle 1.143rem x 1.143rem
+            
+                    p-slider {
+                        width: calc(100% - 2rem);
+                    }
+                }
+            }
+            &:hover, &.slider-dragging {
+                .video-container-controls-overlay {
+                    visibility: visible;
+                }
+            }
+        }
+
+        .video-container {
+            .video-container-minivideo-overlay {
+                position: absolute;
+                top: 0;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                position: absolute;
-                top: 0;
                 width: 100%;
-                height: calc(100% - 2rem);
-    
-                i {
-                    position: absolute;
-                    color: var(--primary-color);
-                    font-size: 2rem;
-
-                    transition: all 0.5s;
-                    opacity: 0;
-                }
-        
-                &:hover i {
-                    opacity: 1;
-                }
-
-                .button-remove {
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                }
+                height: 100%;
+                pointer-events: none;
+                visibility: hidden;
 
                 .video-controls-slider-minivideo {
                     max-width: 50%;
@@ -80,25 +128,15 @@
                     margin-top: 0.5rem;
                  }
             }
-            .video-controls-slider {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                height: 2rem; // because slider-handle 1.143rem x 1.143rem
-                background-color: transparent;
-
-                transition: all 0.5s;
-                opacity: 0;
-    
-                p-slider {
-                    width: calc(100% - 2rem);
+            &.slider-dragging {
+                .video-container-minivideo-overlay {
+                    visibility: visible;
                 }
             }
-            &:hover .video-controls-slider {
-                opacity: 1;
+            &.aspect-16-9 {
+                video {
+                    object-fit: fill;
+                }
             }
         }
     }

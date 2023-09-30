@@ -2,31 +2,46 @@
   <ng-container *ngFor="let rowNumber of getAllRowNumberArray()">
     <div class="video-row">
       <ng-container *ngFor="let videoFile of getVideoFiles(rowNumber); last as isLast">
-        <div class="video-container" [ngStyle]="{'width': getVideoContainerWidth(isLast), 'height': videoContainerHeight}">
+        <div class="video-container"
+          [ngStyle]="{'width': getVideoContainerWidth(isLast), 'height': videoContainerHeight}"
+          [ngClass]="{'slider-dragging': slider.dragging, 'aspect-16-9': videoFile.is169}">
+
           <video #video [src]="videoFile.url"
+            [ngStyle]="{'width': getVideoWidth(isLast), 'height': videoHeight}"
             (loadedmetadata)="onLoadedMetadata(video, videoFile)"
             (timeupdate)="onVideoTimeUpdate(slider, video, videoFile)"
             (canplay)="videoFile.playing ? video.play() : video.pause()"
             (play)="videoFile.playing = true"
             (pause)="videoFile.playing = false"
-            (ended)="videoFile.playing = false"
-            [ngStyle]="{'width': getVideoWidth(isLast), 'height': videoHeight, 'opacity': slider.dragging ? '0.5' : '1', 'object-fit': videoFile.is169 ? 'fill' : 'contain'}"></video>
-          <div class="video-controls-button"
-            (click)="video.paused ? video.play() : video.pause()">
-            <i class="pi pi-play" [ngClass]="{'hidden': !video.paused}"></i>
-            <i class="pi pi-pause" [ngClass]="{'hidden': video.paused}"></i>
-            <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-text" class="button-remove"
-              (onClick)="onClockRemoveButton($event, videoFile)"></p-button>
-            <div class="video-controls-slider-minivideo">
-              <video #miniVideo [src]="videoFile.url" [ngStyle]="{'opacity': slider.dragging ? '1' : '0'}"></video>
+            (ended)="videoFile.playing = false"></video>
+
+          <div class="video-container-controls-overlay">
+            <div class="video-container-header">
+              <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-text" class="button-remove"
+                (onClick)="onClockRemoveButton($event, videoFile)"></p-button>
             </div>
-            <div class="video-controls-slider-time" [ngStyle]="{'opacity': slider.dragging ? '1' : '0'}">{{getHHMMSS(miniVideo.currentTime)}}</div>
+            <div class="video-container-body">
+              <div class="video-container-controls-buttons">
+                <p-button *ngIf="video.paused" icon="pi pi-play" styleClass="p-button-rounded p-button-text" class="button-play"
+                  (onClick)="video.play()"></p-button>
+                <p-button *ngIf="!video.paused" icon="pi pi-pause" styleClass="p-button-rounded p-button-text" class="button-pause"
+                  (onClick)="video.pause()"></p-button>
+              </div>
+            </div>
+            <div class="video-container-footer">
+              <p-slider #slider [(ngModel)]="videoFile.currentTime" [max]="videoFile.duration"
+                (onChange)="onChangeTimeSlider(slider, video, miniVideo, videoFile)"
+                (onSlideEnd)="onTimeSlideEnd(slider, video, miniVideo, videoFile)"></p-slider>
+            </div>
           </div>
-          <div class="video-controls-slider">
-            <p-slider #slider [(ngModel)]="videoFile.currentTime" [max]="videoFile.duration"
-              (onChange)="onChangeTimeSlider(slider, video, miniVideo, videoFile)"
-              (onSlideEnd)="onTimeSlideEnd(slider, video, miniVideo, videoFile)"></p-slider>
+
+          <div class="video-container-minivideo-overlay">
+            <div class="video-controls-slider-minivideo">
+              <video #miniVideo [src]="videoFile.url"></video>
+            </div>
+            <div class="video-controls-slider-time">{{getHHMMSS(miniVideo.currentTime)}}</div>
           </div>
+
         </div>
       </ng-container>
     </div>
