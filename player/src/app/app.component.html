@@ -17,26 +17,30 @@
 
           <div class="video-container-controls-overlay">
             <div class="video-container-header">
-              <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-text" class="button-remove"
+              <p-button icon="pi pi-times" styleClass="p-button-text" class="button-remove"
                 (onClick)="onClockRemoveButton($event, videoFile)"></p-button>
             </div>
             <div class="video-container-body"
               (click)="video.paused ? video.play() : video.pause()">
             </div>
             <div class="video-container-footer">
-              <div class="video-container-controls-play">
-                <p-button *ngIf="video.paused" icon="pi pi-play" styleClass="p-button-rounded p-button-text" class="button-play"
+              <div class="video-container-controls-left">
+                <p-button *ngIf="video.paused" icon="bi bi-play-fill" styleClass="p-button-text" class="button-play"
                   (onClick)="video.play()"></p-button>
-                <p-button *ngIf="!video.paused" icon="pi pi-pause" styleClass="p-button-rounded p-button-text" class="button-pause"
+                <p-button *ngIf="!video.paused" icon="bi bi-pause-fill" styleClass="p-button-text" class="button-pause"
                   (onClick)="video.pause()"></p-button>
+                <p-button *ngIf="video.muted" icon="bi bi-volume-mute" styleClass="p-button-text" class="button-muted"
+                  (onClick)="video.muted = false"></p-button>
+                <p-button *ngIf="!video.muted" icon="bi bi-volume-up" styleClass="p-button-text" class="button-unmuted"
+                  (onClick)="video.muted = true"></p-button>
               </div>
-              <div class="video-container-controls-slider">
+              <div class="video-container-controls-center">
                 <p-slider #slider [(ngModel)]="videoFile.currentTime" [max]="videoFile.duration"
                   (onChange)="onChangeTimeSlider(slider, video, miniVideo, videoFile)"
                   (onSlideEnd)="onTimeSlideEnd(slider, video, miniVideo, videoFile)"></p-slider>
               </div>
-              <div class="video-container-controls-loop">
-                <p-button icon="bi-repeat" styleClass="p-button-rounded p-button-text" class="button-loop"
+              <div class="video-container-controls-right">
+                <p-button icon="bi bi-repeat" styleClass="p-button-text" class="button-loop"
                   (onClick)="videoFile.loop = video.loop = !video.loop"></p-button>
                 <i *ngIf="!video.loop" class="bi-slash-lg icon-slash"></i>
               </div>
