@@ -11,9 +11,9 @@
             (loadedmetadata)="onLoadedMetadata(video, videoFile)"
             (timeupdate)="onVideoTimeUpdate(slider, video, videoFile)"
             (canplay)="videoFile.playing ? video.play() : video.pause()"
-            (play)="videoFile.playing = true"
-            (pause)="videoFile.playing = false"
-            (ended)="videoFile.playing = false"></video>
+            (play)="videoFile.playing = true; updateTitle();"
+            (pause)="videoFile.playing = false; updateTitle();"
+            (ended)="videoFile.playing = false; updateTitle();"></video>
 
           <div class="video-container-controls-overlay">
             <div class="video-container-header">

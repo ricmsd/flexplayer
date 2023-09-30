@@ -1,4 +1,5 @@
-import { Component, HostListener, NgZone, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Slider } from 'primeng/slider';
 
 declare var window: {
@@ -55,9 +56,10 @@ export class AppComponent implements OnInit {
     return this.videoFiles.slice(start, end);
   }
 
-  constructor(private ngZone: NgZone) {
+  constructor(private titleService: Title) {
     this.loadPlayerStatus();
     this.resizeVideoContainer();
+    this.updateTitle();
   }
 
   ngOnInit(): void {
@@ -111,7 +113,6 @@ export class AppComponent implements OnInit {
       is169: true,
       loop: true,
     });
-    this.savePlayerStatus();
   }
 
   @HostListener('drop', ['$event'])
@@ -141,6 +142,8 @@ export class AppComponent implements OnInit {
       const url = await window.electronAPI.pathToFileURL(path);
       this.addNewVideoFile(url);
     }
+    this.savePlayerStatus();
+    this.updateTitle();
   }
 
   @HostListener('wheel', ['$event'])
@@ -232,5 +235,15 @@ export class AppComponent implements OnInit {
     event.stopPropagation();
     this.videoFiles = this.videoFiles.filter(i => i !== videoFile);
     this.savePlayerStatus();
+    this.updateTitle();
+  }
+
+  public updateTitle(): void {
+    let title = 'flexplayer';
+    if (this.videoFiles.length > 0) {
+      const playing = this.videoFiles.filter(i => i.playing).length;
+      title += `: ${playing} playing, ${this.videoFiles.length - playing} paused.`;
+    }
+    this.titleService.setTitle(title);
   }
 }
