@@ -20,18 +20,26 @@
               <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-text" class="button-remove"
                 (onClick)="onClockRemoveButton($event, videoFile)"></p-button>
             </div>
-            <div class="video-container-body">
-              <div class="video-container-controls-buttons">
+            <div class="video-container-body"
+              (click)="video.paused ? video.play() : video.pause()">
+            </div>
+            <div class="video-container-footer">
+              <div class="video-container-controls-play">
                 <p-button *ngIf="video.paused" icon="pi pi-play" styleClass="p-button-rounded p-button-text" class="button-play"
                   (onClick)="video.play()"></p-button>
                 <p-button *ngIf="!video.paused" icon="pi pi-pause" styleClass="p-button-rounded p-button-text" class="button-pause"
                   (onClick)="video.pause()"></p-button>
               </div>
-            </div>
-            <div class="video-container-footer">
-              <p-slider #slider [(ngModel)]="videoFile.currentTime" [max]="videoFile.duration"
-                (onChange)="onChangeTimeSlider(slider, video, miniVideo, videoFile)"
-                (onSlideEnd)="onTimeSlideEnd(slider, video, miniVideo, videoFile)"></p-slider>
+              <div class="video-container-controls-slider">
+                <p-slider #slider [(ngModel)]="videoFile.currentTime" [max]="videoFile.duration"
+                  (onChange)="onChangeTimeSlider(slider, video, miniVideo, videoFile)"
+                  (onSlideEnd)="onTimeSlideEnd(slider, video, miniVideo, videoFile)"></p-slider>
+              </div>
+              <div class="video-container-controls-loop">
+                <p-button icon="bi-repeat" styleClass="p-button-rounded p-button-text" class="button-loop"
+                  (onClick)="video.loop = video.loop ? false : true"></p-button>
+                <i *ngIf="!video.loop" class="bi-slash-lg icon-slash"></i>
+              </div>
             </div>
           </div>
 
