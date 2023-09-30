@@ -39,6 +39,11 @@
                     object-fit: fill;
                 }
             }
+            &.playing-failed {
+                > video {
+                    background-color: hsl(0, 100, 10);
+                }
+            }
         }
 
         .video-container {
@@ -72,6 +77,12 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
+
+                    .icon-warning {
+                        visibility: hidden;
+                        color: #dee2e6;
+                        font-size: 3rem;
+                    }
                 }
                 .video-container-footer {
                     display: flex;
@@ -108,6 +119,20 @@
             &:hover, &.slider-dragging {
                 .video-container-controls-overlay {
                     visibility: visible;
+                }
+            }
+            &.playing-failed {
+                .video-container-controls-overlay {
+                    visibility: visible; // always visible...
+
+                    .video-container-body {
+                        .icon-warning {
+                            visibility: visible;
+                        }
+                    }
+                    .video-container-footer {
+                        visibility: hidden; // but, control buttons hidden.
+                    }
                 }
             }
         }

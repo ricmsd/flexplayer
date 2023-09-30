@@ -4,13 +4,14 @@
       <ng-container *ngFor="let videoFile of getVideoFiles(rowNumber); last as isLast">
         <div class="video-container"
           [ngStyle]="{'width': getVideoContainerWidth(isLast), 'height': videoContainerHeight}"
-          [ngClass]="{'slider-dragging': slider.dragging, 'aspect-16-9': videoFile.is169}">
+          [ngClass]="{'slider-dragging': slider.dragging, 'aspect-16-9': videoFile.is169, 'playing-failed': !!video.error}">
 
           <video #video [src]="videoFile.url"
             [ngStyle]="{'width': getVideoWidth(isLast), 'height': videoHeight}"
             (loadedmetadata)="onLoadedMetadata(video, videoFile)"
             (timeupdate)="onVideoTimeUpdate(slider, video, videoFile)"
             (canplay)="videoFile.playing ? video.play() : video.pause()"
+            (error)="videoFile.error = true; updateTitle();"
             (play)="videoFile.playing = true; updateTitle();"
             (pause)="videoFile.playing = false; updateTitle();"
             (ended)="videoFile.playing = false; updateTitle();"></video>
@@ -22,6 +23,7 @@
             </div>
             <div class="video-container-body"
               (click)="video.paused ? video.play() : video.pause()">
+              <i class="pi pi-exclamation-triangle icon-warning"></i>
             </div>
             <div class="video-container-footer">
               <div class="video-container-controls-left">

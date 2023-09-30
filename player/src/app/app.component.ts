@@ -15,6 +15,7 @@ interface VideoFile {
   playing: boolean;
   is169: boolean;
   loop: boolean;
+  error: boolean;
 }
 
 interface PlayerStatus {
@@ -112,6 +113,7 @@ export class AppComponent implements OnInit {
       playing: false,
       is169: true,
       loop: true,
+      error: false,
     });
   }
 
@@ -242,7 +244,8 @@ export class AppComponent implements OnInit {
     let title = 'flexplayer';
     if (this.videoFiles.length > 0) {
       const playing = this.videoFiles.filter(i => i.playing).length;
-      title += `: ${playing} playing, ${this.videoFiles.length - playing} paused.`;
+      const error = this.videoFiles.filter(i => i.error).length;
+      title += `: ${playing} playing, ${this.videoFiles.length - playing - error} paused.`;
     }
     this.titleService.setTitle(title);
   }
