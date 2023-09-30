@@ -41,7 +41,7 @@
             }
             &.playing-failed {
                 > video {
-                    background-color: hsl(0, 100, 10);
+                    background-color: hsl(0, 100%, 10%);
                 }
             }
         }
@@ -52,9 +52,7 @@
                 top: 0;
                 width: 100%;
                 height: 100%;
-                display: flex;
-                flex-direction: column;
-                visibility: hidden;
+                overflow: hidden;
 
                 ::ng-deep button.p-button {
                     width: 2rem;
@@ -65,15 +63,22 @@
                     }
                 }
                 .video-container-header {
+                    position: absolute;
+                    top: -32px;
+                    transition: all .2s ease-out;
+
                     height: 32px;
                     display: flex;
+                    width: 100%;
 
                     .button-remove {
                         margin-left: auto;
                     }
                 }
                 .video-container-body {
-                    flex-grow: 1;
+                    position: absolute;
+                    top: 32px;
+                    height: calc(100% - 32px * 2);
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -85,10 +90,13 @@
                     }
                 }
                 .video-container-footer {
+                    position: absolute;
+                    bottom: -32px;
+                    transition: all .2s ease-out;
+
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    bottom: 0;
                     width: 100%;
                     height: 32px;
 
@@ -119,6 +127,12 @@
             &:hover, &.slider-dragging {
                 .video-container-controls-overlay {
                     visibility: visible;
+                    .video-container-header {
+                        top: 0;
+                    }
+                    .video-container-footer {
+                        bottom: 0;
+                    }
                 }
             }
             &.playing-failed {
