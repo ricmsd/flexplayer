@@ -3,8 +3,9 @@ FlexPlayer plays multiple video files in a grid. FlexPlayer is a desktop applica
 
 ## Features
 - D&D to add video files.
-- Play/stop, mute and loop playback of individual files
-- Ctrl key + mouse wheel to adjust video displayed per line
+- Play/stop, mute and loop playback of individual videos.
+- Ctrl key + mouse wheel to adjust video displayed per line.
+- Spacebar to play/stop all videos.
 
 ## Codec and Container Support
 See [https://www.chromium.org/audio-video/](https://www.chromium.org/audio-video/).
