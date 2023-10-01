@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Slider } from 'primeng/slider';
 
@@ -37,25 +37,14 @@ export class AppComponent implements OnInit {
   private readonly VIDEO_CONTAINER_COUNT_STEP = 1;
 
   public clientWidth?: number;
+
+  public videoFiles: VideoFile[] = [];
   public videoContainerWidth?: string;
   public videoContainerHeight?: string;
   public videoWidth?: string;
   public videoHeight?: string;
 
-  public videoFiles: VideoFile[] = [];
-  public getAllRowNumberArray(): number[] {
-    const nRow = Math.ceil(this.videoFiles.length / this.videoContainerCount);
-    const result: number[] = [];
-    for (let i = 0; i < nRow; i++) {
-      result.push(i);
-    }
-    return result;
-  }
-  public getVideoFiles(row: number): VideoFile[] {
-    const start = row * this.videoContainerCount;
-    const end = start + this.videoContainerCount;
-    return this.videoFiles.slice(start, end);
-  }
+  @ViewChildren('video') videoQuery?: QueryList<ElementRef<HTMLVideoElement>>;
 
   constructor(private titleService: Title) {
     this.loadPlayerStatus();
@@ -72,6 +61,7 @@ export class AppComponent implements OnInit {
       videoFiles: [],
     };
   }
+
   private loadPlayerStatus(): void {
     let status: PlayerStatus;
     const value = localStorage.getItem(this.STORAGE_KEY_PLAYER_STATUS);
@@ -91,6 +81,7 @@ export class AppComponent implements OnInit {
       i.playing = false; // Stop at start-up.
     });
   }
+
   private savePlayerStatus(): void {
     const status: PlayerStatus = {
       videoContainerCount: this.videoContainerCount,
@@ -151,10 +142,10 @@ export class AppComponent implements OnInit {
   @HostListener('wheel', ['$event'])
   public onMouseWheel(event: WheelEvent): void {
     if (event.ctrlKey) {
-      if (event.deltaY > 0) {
+      if (event.deltaY < 0) {
         this.videoContainerCount = Math.max(
           this.VIDEO_CONTAINER_COUNT_MIN, this.videoContainerCount - this.VIDEO_CONTAINER_COUNT_STEP);
-      } else if (event.deltaY < 0) {
+      } else if (event.deltaY > 0) {
         this.videoContainerCount = Math.min(
           this.VIDEO_CONTAINER_COUNT_MAX, this.videoContainerCount + this.VIDEO_CONTAINER_COUNT_STEP);
       }
@@ -166,6 +157,35 @@ export class AppComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   public onResizeWindow(event: any): void {
     this.resizeVideoContainer();
+  }
+
+  @HostListener('window:keydown.space', ['$event'])
+  public onKeydownSpace(event: any): void {
+    const playing = this.videoQuery?.filter(video => !video.nativeElement.paused).length;
+    const canPlay = this.videoQuery?.filter(video => !video.nativeElement.error).length;
+    const allPlaying = canPlay == playing;
+    this.videoQuery?.forEach(video => {
+      if (allPlaying) {
+        video.nativeElement.pause();
+      } else if (video.nativeElement.paused) {
+        video.nativeElement.play();
+      }
+    });
+  }
+
+  public getAllRowNumberArray(): number[] {
+    const nRow = Math.ceil(this.videoFiles.length / this.videoContainerCount);
+    const result: number[] = [];
+    for (let i = 0; i < nRow; i++) {
+      result.push(i);
+    }
+    return result;
+  }
+
+  public getVideoFiles(row: number): VideoFile[] {
+    const start = row * this.videoContainerCount;
+    const end = start + this.videoContainerCount;
+    return this.videoFiles.slice(start, end);
   }
 
   private resizeVideoContainer(): void {
@@ -182,6 +202,7 @@ export class AppComponent implements OnInit {
     this.videoWidth = Math.floor(width + 1) + 'px';
     this.videoHeight = Math.floor(height + 1) + 'px';
   }
+
   public getVideoContainerWidth(isLast: boolean): string {
     if (!isLast) {
       return <string>this.videoContainerWidth;
@@ -191,6 +212,7 @@ export class AppComponent implements OnInit {
     const width = Math.floor(<number>this.clientWidth / this.videoContainerCount);
     return (width + (<number>this.clientWidth - width * this.videoContainerCount)) + 'px';
   }
+
   public getVideoWidth(isLast: boolean): string {
     if (!isLast) {
       return <string>this.videoWidth;
@@ -209,6 +231,7 @@ export class AppComponent implements OnInit {
     video.currentTime = videoFile.currentTime;
     video.loop = videoFile.loop;
   }
+
   public onChangeTimeSlider(slider: Slider, video: HTMLVideoElement, miniVideo: HTMLVideoElement, videoFile: VideoFile): void {
     if (!slider.dragging) {
       return;
@@ -216,15 +239,18 @@ export class AppComponent implements OnInit {
     // very slow...? currentTime are not reflected immediately.
     miniVideo.currentTime = videoFile.currentTime;
   }
+
   public onTimeSlideEnd(slider: Slider, video: HTMLVideoElement, miniVideo: HTMLVideoElement, videoFile: VideoFile): void {
     video.currentTime = videoFile.currentTime;
   }
+
   public onVideoTimeUpdate(slider: Slider, video: HTMLVideoElement, videoFile: VideoFile): void {
     if (slider.dragging) {
       return;
     }
     videoFile.currentTime = video.currentTime;
   }
+
   public getHHMMSS(duration: number): string {
     duration = Math.floor(duration);
     const hour = Math.floor(duration / 3600);
@@ -232,6 +258,7 @@ export class AppComponent implements OnInit {
     const sec = (duration % 3600) % 60;
     return `0${hour}`.slice(-2) + ':' + `0${min}`.slice(-2) + ':' + `0${sec}`.slice(-2);
   }
+
   public onClockRemoveButton(event: any, videoFile: VideoFile): void {
     event.preventDefault();
     event.stopPropagation();

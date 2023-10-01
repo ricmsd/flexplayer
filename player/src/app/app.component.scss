@@ -78,6 +78,7 @@
                 .video-container-body {
                     position: absolute;
                     top: 32px;
+                    width: 100%;
                     height: calc(100% - 32px * 2);
                     display: flex;
                     justify-content: center;
