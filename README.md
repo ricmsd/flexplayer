@@ -6,6 +6,9 @@ FlexPlayer plays multiple video files in a grid. FlexPlayer is a desktop applica
 - Play/stop, mute and loop playback of individual files
 - Ctrl key + mouse wheel to adjust video displayed per line
 
+## Codec and Container Support
+See [https://www.chromium.org/audio-video/](https://www.chromium.org/audio-video/).
+
 ## Notes
 - A powerful GPU is required to play large numbers of files simultaneously.
 - Still in the process of being built. It is a bit of a mess and has a lot of problems.
@@ -15,7 +18,8 @@ FlexPlayer plays multiple video files in a grid. FlexPlayer is a desktop applica
 
 ## How to build
 ### Requirements
-- Node.js v18.17.1
+- Node.js (Tested on v18.17.1)
+- Windows OS (Tested on Windows 11, not sure if it works as expected on MacOS or Linux)
 
 ### Build
     git clone https://github.com/ricmsd/flexplayer.git
