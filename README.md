@@ -18,6 +18,8 @@ See [https://www.chromium.org/audio-video/](https://www.chromium.org/audio-video
 ## Screenshot
 ![FlexPlayer](https://raw.githubusercontent.com/ricmsd/flexplayer/main/docs/screenshot.png)
 
+![FlexPlayer](https://raw.githubusercontent.com/ricmsd/flexplayer/main/docs/screenshot-4.png)
+
 ## How to build
 ### Requirements
 - Node.js (Tested on v18.17.1)
