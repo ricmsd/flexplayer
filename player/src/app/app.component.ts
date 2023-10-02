@@ -10,12 +10,14 @@ declare var window: {
 
 interface VideoFile {
   url: string;
+  previousTime: number;
   currentTime: number;
   duration: number;
   playing: boolean;
   is169: boolean;
   loop: boolean;
   error: boolean;
+  range: number[]
 }
 
 interface PlayerStatus {
@@ -99,12 +101,14 @@ export class AppComponent implements OnInit {
   private addNewVideoFile(url: string): void {
     this.videoFiles.push({
       url: url,
+      previousTime: 0,
       currentTime: 0,
       duration: 0,
       playing: false,
       is169: true,
       loop: true,
       error: false,
+      range: []
     });
   }
 
@@ -224,11 +228,14 @@ export class AppComponent implements OnInit {
   }
 
   public onLoadedMetadata(video: HTMLVideoElement, videoFile: VideoFile): void {
-    videoFile.duration = video.duration;
+    videoFile.duration = Math.ceil(video.duration * 100);
     videoFile.is169 = (video.videoWidth / 16) == (video.videoHeight / 9);
+    if (videoFile.range.length <= 0) {
+      videoFile.range = [0, videoFile.duration];
+    }
 
     // Recovery of currentTime, etc. when recreating the DOM.
-    video.currentTime = videoFile.currentTime;
+    video.currentTime = videoFile.currentTime / 100;
     video.loop = videoFile.loop;
   }
 
@@ -237,18 +244,40 @@ export class AppComponent implements OnInit {
       return;
     }
     // very slow...? currentTime are not reflected immediately.
-    miniVideo.currentTime = videoFile.currentTime;
+    miniVideo.currentTime = videoFile.currentTime / 100;
+    if (!video.paused) {
+      videoFile.previousTime = videoFile.currentTime;
+    }
+  }
+
+  public onChangeTimeRange(videoFile: VideoFile): void {
+    this.savePlayerStatus();
   }
 
   public onTimeSlideEnd(slider: Slider, video: HTMLVideoElement, miniVideo: HTMLVideoElement, videoFile: VideoFile): void {
-    video.currentTime = videoFile.currentTime;
+    video.currentTime = videoFile.currentTime / 100;
+    if (!video.paused) {
+      videoFile.previousTime = videoFile.currentTime;
+    }
   }
 
   public onVideoTimeUpdate(slider: Slider, video: HTMLVideoElement, videoFile: VideoFile): void {
     if (slider.dragging) {
       return;
     }
-    videoFile.currentTime = video.currentTime;
+    videoFile.currentTime = Math.ceil(video.currentTime * 100);
+    if (!video.paused) {
+      if (videoFile.currentTime === videoFile.range[1] ||
+          (videoFile.previousTime < videoFile.range[1] && videoFile.currentTime > videoFile.range[1])) {
+        if (videoFile.loop) {
+          videoFile.currentTime = videoFile.range[0];
+          video.currentTime = videoFile.currentTime / 100;
+        } else {
+          video.pause();
+        }
+      }
+      videoFile.previousTime = videoFile.currentTime;
+    }
   }
 
   public getHHMMSS(duration: number): string {

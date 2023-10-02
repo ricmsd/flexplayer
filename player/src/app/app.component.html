@@ -37,9 +37,21 @@
                   (onClick)="video.muted = true"></p-button>
               </div>
               <div class="video-container-controls-center">
-                <p-slider #slider [(ngModel)]="videoFile.currentTime" [max]="videoFile.duration"
-                  (onChange)="onChangeTimeSlider(slider, video, miniVideo, videoFile)"
-                  (onSlideEnd)="onTimeSlideEnd(slider, video, miniVideo, videoFile)"></p-slider>
+                <div class="video-container-controls-slider">
+                  <div class="video-container-controls-range"
+                    *ngIf="videoFile.range.length == 2"
+                    [ngStyle]="{'left': (videoFile.range[0]/videoFile.duration*100) + '%', 'right': ((videoFile.duration - videoFile.range[1])/videoFile.duration*100) + '%'}"></div>
+                </div>
+                <div class="video-container-controls-slider-handle">
+                  <p-slider #slider [(ngModel)]="videoFile.currentTime" [max]="videoFile.duration" [step]="1"
+                    (onChange)="onChangeTimeSlider(slider, video, miniVideo, videoFile)"
+                    (onSlideEnd)="onTimeSlideEnd(slider, video, miniVideo, videoFile)"></p-slider>
+                </div>
+                <div class="video-container-controls-range-handle">
+                  <p-slider #range *ngIf="videoFile.range.length == 2"
+                    [(ngModel)]="videoFile.range" [max]="videoFile.duration" [step]="1" [range]="true"
+                    (onChange)="onChangeTimeRange(videoFile)"></p-slider>
+                </div>
               </div>
               <div class="video-container-controls-right">
                 <p-button icon="bi bi-repeat" styleClass="p-button-text" class="button-loop"

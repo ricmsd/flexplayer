@@ -106,7 +106,84 @@
                     }
                     .video-container-controls-center {
                         flex-grow: 1;
-                        padding: 0 0.75rem;
+                        margin: 0 0.75rem;
+                        display: flex;
+                        height: 100%;
+                        position: relative;
+
+                        .video-container-controls-slider {
+                            position: absolute;
+                            width: 100%;
+                            height: 10px;
+                            top: calc(50% - 5px);
+                            background-color: #9DA8B3;
+                            border-radius: 2px;
+                            opacity: 0.8;
+
+                            .video-container-controls-range {
+                                position: absolute;
+                                height: 100%;
+                                background-color: #dee2e6;
+                                border-radius: 2px;
+                            }
+                        }
+                        .video-container-controls-slider-handle {
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            align-items: center;
+
+                            p-slider {
+                                width: 100%;
+
+                                ::ng-deep .p-slider-horizontal {
+                                    height: 32px;
+                                    border-radius: 0;
+                                    background-color: transparent;
+                                }
+                                ::ng-deep .p-slider-range {
+                                    display: none;
+                                }
+                                ::ng-deep .p-slider-handle {
+                                    top: 4px;
+                                    width: 10px;
+                                    height: 24px;
+                                    margin-left: -5px;
+                                    margin-top: 0;
+                                    border: 1px solid black;
+                                    border-radius: 2px;
+                                    background-color: #dee2e6;
+                                }
+                            }
+                        }
+                        .video-container-controls-range-handle {
+                            position: absolute;
+                            top: 32px;
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            align-items: center;
+
+                            p-slider {
+                                width: 100%;
+
+                                ::ng-deep .p-slider-handle {
+                                    top: -45px;
+                                    width: 10px;
+                                    height: 32px;
+                                    margin-left: -5px;
+                                    margin-top: 0;
+                                    border: 0;
+                                    border-radius: 0;
+                                    background-color: transparent;
+                                    cursor: col-resize;
+
+                                    &:focus {
+                                        box-shadow: none;
+                                    }
+                                }
+                            }
+                        }
                     }
                     .video-container-controls-right {
                         width: 32px;
