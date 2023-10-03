@@ -108,7 +108,7 @@ export class AppComponent implements OnInit {
       is169: true,
       loop: true,
       error: false,
-      range: []
+      range: [0, 0]
     });
   }
 
@@ -230,7 +230,7 @@ export class AppComponent implements OnInit {
   public onLoadedMetadata(video: HTMLVideoElement, videoFile: VideoFile): void {
     videoFile.duration = Math.ceil(video.duration * 100);
     videoFile.is169 = (video.videoWidth / 16) == (video.videoHeight / 9);
-    if (videoFile.range.length <= 0) {
+    if (videoFile.range[0] === 0 && videoFile.range[1] === 0) {
       videoFile.range = [0, videoFile.duration];
     }
 
@@ -250,7 +250,8 @@ export class AppComponent implements OnInit {
     }
   }
 
-  public onChangeTimeRange(videoFile: VideoFile): void {
+  public onChangeTimeRange(slider: Slider, miniVideo: HTMLVideoElement, videoFile: VideoFile): void {
+    miniVideo.currentTime = videoFile.range[slider.handleIndex] / 100;
     this.savePlayerStatus();
   }
 

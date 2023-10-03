@@ -4,7 +4,7 @@
       <ng-container *ngFor="let videoFile of getVideoFiles(rowNumber); last as isLast">
         <div class="video-container"
           [ngStyle]="{'width': getVideoContainerWidth(isLast), 'height': videoContainerHeight}"
-          [ngClass]="{'slider-dragging': slider.dragging, 'aspect-16-9': videoFile.is169, 'playing-failed': !!video.error}">
+          [ngClass]="{'slider-dragging': slider.dragging || range.dragging, 'aspect-16-9': videoFile.is169, 'playing-failed': !!video.error}">
 
           <video #video [src]="videoFile.url"
             [ngStyle]="{'width': getVideoWidth(isLast), 'height': videoHeight}"
@@ -48,9 +48,8 @@
                     (onSlideEnd)="onTimeSlideEnd(slider, video, miniVideo, videoFile)"></p-slider>
                 </div>
                 <div class="video-container-controls-range-handle">
-                  <p-slider #range *ngIf="videoFile.range.length == 2"
-                    [(ngModel)]="videoFile.range" [max]="videoFile.duration" [step]="1" [range]="true"
-                    (onChange)="onChangeTimeRange(videoFile)"></p-slider>
+                  <p-slider #range [(ngModel)]="videoFile.range" [max]="videoFile.duration" [step]="1" [range]="true"
+                    (onChange)="onChangeTimeRange(range, miniVideo, videoFile)"></p-slider>
                 </div>
               </div>
               <div class="video-container-controls-right">
