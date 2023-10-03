@@ -81,6 +81,9 @@ export class AppComponent implements OnInit {
     this.videoFiles = status.videoFiles;
     this.videoFiles.forEach(i => {
       i.playing = false; // Stop at start-up.
+      if (!i.range) {
+        i.range = [0, 0];
+      }
     });
   }
 
