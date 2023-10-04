@@ -239,7 +239,6 @@ export class AppComponent implements OnInit {
 
     // Recovery of currentTime, etc. when recreating the DOM.
     video.currentTime = videoFile.currentTime / 100;
-    video.loop = videoFile.loop;
   }
 
   public onChangeTimeSlider(slider: Slider, video: HTMLVideoElement, miniVideo: HTMLVideoElement, videoFile: VideoFile): void {
@@ -308,5 +307,24 @@ export class AppComponent implements OnInit {
       title += `: ${playing} playing, ${this.videoFiles.length - playing - error} paused.`;
     }
     this.titleService.setTitle(title);
+  }
+
+  public onClickPlay(video: HTMLVideoElement, videoFile: VideoFile): void {
+    if (videoFile.currentTime === videoFile.duration) {
+      videoFile.currentTime = videoFile.range[0];
+      video.currentTime = videoFile.range[0] / 100;
+    }
+    video.play();
+  }
+
+  public onVideoEnded(video: HTMLVideoElement, videoFile: VideoFile): void {
+    if (!videoFile.loop) {
+      videoFile.playing = false;
+      this.updateTitle();
+    } else {
+      videoFile.currentTime = videoFile.range[0];
+      video.currentTime = videoFile.range[0] / 100;
+      video.play();
+    }
   }
 }

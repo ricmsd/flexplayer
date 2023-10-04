@@ -14,7 +14,7 @@
             (error)="videoFile.error = true; updateTitle();"
             (play)="videoFile.playing = true; updateTitle();"
             (pause)="videoFile.playing = false; updateTitle();"
-            (ended)="videoFile.playing = false; updateTitle();"></video>
+            (ended)="onVideoEnded(video, videoFile)"></video>
 
           <div class="video-container-controls-overlay">
             <div class="video-container-header">
@@ -22,13 +22,13 @@
                 (onClick)="onClockRemoveButton($event, videoFile)"></p-button>
             </div>
             <div class="video-container-body"
-              (click)="video.paused ? video.play() : video.pause()">
+              (click)="video.paused ? onClickPlay(video, videoFile) : video.pause()">
               <i class="pi pi-exclamation-triangle icon-warning"></i>
             </div>
             <div class="video-container-footer">
               <div class="video-container-controls-left">
                 <p-button *ngIf="video.paused" icon="bi bi-play-fill" styleClass="p-button-text" class="button-play"
-                  (onClick)="video.play()"></p-button>
+                  (onClick)="onClickPlay(video, videoFile)"></p-button>
                 <p-button *ngIf="!video.paused" icon="bi bi-pause-fill" styleClass="p-button-text" class="button-pause"
                   (onClick)="video.pause()"></p-button>
                 <p-button *ngIf="video.muted" icon="bi bi-volume-mute" styleClass="p-button-text" class="button-muted"
@@ -54,8 +54,8 @@
               </div>
               <div class="video-container-controls-right">
                 <p-button icon="bi bi-repeat" styleClass="p-button-text" class="button-loop"
-                  (onClick)="videoFile.loop = video.loop = !video.loop"></p-button>
-                <i *ngIf="!video.loop" class="bi-slash-lg icon-slash"></i>
+                  (onClick)="videoFile.loop = !videoFile.loop"></p-button>
+                <i *ngIf="!videoFile.loop" class="bi-slash-lg icon-slash"></i>
               </div>
             </div>
           </div>
