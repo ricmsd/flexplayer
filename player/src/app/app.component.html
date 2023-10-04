@@ -6,7 +6,7 @@
       (fullscreenchange)="onContainerFullscreenChange(video)"
       (mousemove)="onContainerMousemove(container)">
 
-      <video #video [src]="videoFile.url"
+      <video #video class="video-main" [src]="videoFile.url"
         [ngStyle]="{'width': videoWidth, 'height': videoHeight}"
         (loadedmetadata)="onLoadedMetadata(video, videoFile)"
         (timeupdate)="onVideoTimeUpdate(slider, video, videoFile)"
@@ -66,7 +66,7 @@
 
       <div class="video-container-minivideo-overlay">
         <div class="video-controls-slider-minivideo">
-          <video #miniVideo [src]="videoFile.url"></video>
+          <video #miniVideo class="video-mini" [src]="videoFile.url"></video>
         </div>
         <div class="video-controls-slider-time">{{getHHMMSS(miniVideo.currentTime)}}</div>
       </div>

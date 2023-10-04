@@ -173,16 +173,26 @@ export class AppComponent implements OnInit {
 
   @HostListener('window:keydown.space', ['$event'])
   public onKeydownSpace(event: any): void {
-    const playing = this.videoQuery?.filter(video => !video.nativeElement.paused).length;
-    const canPlay = this.videoQuery?.filter(video => !video.nativeElement.error).length;
-    const allPlaying = canPlay == playing;
-    this.videoQuery?.forEach(video => {
-      if (allPlaying) {
-        video.nativeElement.pause();
-      } else if (video.nativeElement.paused) {
-        video.nativeElement.play();
+    if (!!document.fullscreenElement) {
+      const container = document.fullscreenElement;
+      const video = <HTMLVideoElement>container.querySelector('.video-main');
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
       }
-    });
+    } else {
+      const playing = this.videoQuery?.filter(video => !video.nativeElement.paused).length;
+      const canPlay = this.videoQuery?.filter(video => !video.nativeElement.error).length;
+      const allPlaying = canPlay == playing;
+      this.videoQuery?.forEach(videoRef => {
+        if (allPlaying) {
+          videoRef.nativeElement.pause();
+        } else if (videoRef.nativeElement.paused) {
+          videoRef.nativeElement.play();
+        }
+      });
+    }
   }
 
   public getVideoFiles(row: number): VideoFile[] {
