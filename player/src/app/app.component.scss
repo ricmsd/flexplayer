@@ -71,7 +71,7 @@
             }
             .video-container-header {
                 position: absolute;
-                top: 0;
+                top: -32px;
                 opacity: 0;
                 transition: all .2s ease-out;
 
@@ -100,7 +100,7 @@
             }
             .video-container-footer {
                 position: absolute;
-                bottom: 0;
+                bottom: -32px;
                 opacity: 0;
                 transition: all .2s ease-out;
 
