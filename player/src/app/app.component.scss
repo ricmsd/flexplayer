@@ -22,6 +22,8 @@
     }
 
     .video-container {
+        overflow: hidden;
+
         > video {
             background-color: black;
         }
@@ -70,6 +72,7 @@
             .video-container-header {
                 position: absolute;
                 top: -32px;
+                opacity: 0;
                 transition: all .2s ease-out;
 
                 height: 32px;
@@ -98,6 +101,7 @@
             .video-container-footer {
                 position: absolute;
                 bottom: -32px;
+                opacity: 0;
                 transition: all .2s ease-out;
 
                 display: flex;
@@ -105,6 +109,8 @@
                 align-items: center;
                 width: 100%;
                 height: 32px;
+
+                background-color: rgba(0, 0, 0, 0.2);
 
                 .video-container-controls-left {
                     width: calc(32px * 2);
@@ -203,6 +209,7 @@
                         font-weight: bold;
                         color: #dee2e6;
                         transform: scaleX(-1);
+                        left: 8px;
                     }
                 }
             }
@@ -214,9 +221,11 @@
                 visibility: visible;
                 .video-container-header {
                     top: 0;
+                    opacity: 1;
                 }
                 .video-container-footer {
                     bottom: 0;
+                    opacity: 1;
                 }
             }
         }
