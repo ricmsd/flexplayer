@@ -180,15 +180,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  public getAllRowNumberArray(): number[] {
-    const nRow = Math.ceil(this.videoFiles.length / this.videoContainerCount);
-    const result: number[] = [];
-    for (let i = 0; i < nRow; i++) {
-      result.push(i);
-    }
-    return result;
-  }
-
   public getVideoFiles(row: number): VideoFile[] {
     const start = row * this.videoContainerCount;
     const end = start + this.videoContainerCount;
@@ -208,26 +199,6 @@ export class AppComponent implements OnInit {
     // (Cause of the gap is unknown)
     this.videoWidth = Math.floor(width + 1) + 'px';
     this.videoHeight = Math.floor(height + 1) + 'px';
-  }
-
-  public getVideoContainerWidth(isLast: boolean): string {
-    if (!isLast) {
-      return <string>this.videoContainerWidth;
-    }
-
-    // Add margins to the last container.
-    const width = Math.floor(<number>this.clientWidth / this.videoContainerCount);
-    return (width + (<number>this.clientWidth - width * this.videoContainerCount)) + 'px';
-  }
-
-  public getVideoWidth(isLast: boolean): string {
-    if (!isLast) {
-      return <string>this.videoWidth;
-    }
-
-    // Add margins to the last container.
-    const width = Math.floor(<number>this.clientWidth / this.videoContainerCount);
-    return (width + (<number>this.clientWidth - width * this.videoContainerCount) + 1) + 'px';
   }
 
   public onLoadedMetadata(video: HTMLVideoElement, videoFile: VideoFile): void {
