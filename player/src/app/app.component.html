@@ -4,7 +4,8 @@
       [ngStyle]="{'width': videoContainerWidth, 'height': videoContainerHeight}"
       [ngClass]="{'slider-dragging': slider.dragging || range.dragging, 'aspect-16-9': videoFile.is169, 'playing-failed': !!video.error}"
       (fullscreenchange)="onContainerFullscreenChange(video)"
-      (mousemove)="onContainerMousemove(container)">
+      (mousemove)="onContainerMousemove(container)"
+      (mouseenter)="onContainerMousemove(container)">
 
       <video #video class="video-main" [src]="videoFile.url"
         [ngStyle]="{'width': videoWidth, 'height': videoHeight}"
