@@ -50,6 +50,8 @@
     }
 
     .video-container {
+        cursor: none;
+
         .video-container-controls-overlay {
             position: absolute;
             top: 0;
@@ -205,7 +207,9 @@
                 }
             }
         }
-        &:hover, &.slider-dragging {
+        &.mousemove:hover, &.slider-dragging {
+            cursor: auto;
+
             .video-container-controls-overlay {
                 visibility: visible;
                 .video-container-header {

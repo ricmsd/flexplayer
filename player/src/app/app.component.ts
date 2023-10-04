@@ -321,4 +321,15 @@ export class AppComponent implements OnInit {
       this.playbackAfterExitingFullscreen = [];
     }
   }
+
+  public onContainerMousemove(container: HTMLDivElement): void {
+    container.classList.add('mousemove');
+    if (!!(<any>container)['_mousemove_timer_id']) {
+      clearTimeout((<any>container)['_mousemove_timer_id']);
+    }
+    (<any>container)['_mousemove_timer_id'] = setTimeout(() => {
+      container.classList.remove('mousemove');
+      (<any>container)['_mousemove_timer_id'] = null;
+    }, 5000);
+  }
 }

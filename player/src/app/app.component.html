@@ -3,7 +3,8 @@
     <div #container class="video-container"
       [ngStyle]="{'width': videoContainerWidth, 'height': videoContainerHeight}"
       [ngClass]="{'slider-dragging': slider.dragging || range.dragging, 'aspect-16-9': videoFile.is169, 'playing-failed': !!video.error}"
-      (fullscreenchange)="onContainerFullscreenChange(video)">
+      (fullscreenchange)="onContainerFullscreenChange(video)"
+      (mousemove)="onContainerMousemove(container)">
 
       <video #video [src]="videoFile.url"
         [ngStyle]="{'width': videoWidth, 'height': videoHeight}"
