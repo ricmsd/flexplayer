@@ -40,6 +40,13 @@
                 background-color: hsl(0, 100%, 10%);
             }
         }
+        &:fullscreen {
+            > video {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: contain !important;
+            }
+        }
     }
 
     .video-container {
@@ -182,7 +189,7 @@
                     }
                 }
                 .video-container-controls-right {
-                    width: 32px;
+                    width: 64px;
                     position: relative;
                     display: flex;
                     justify-content: center;
@@ -222,6 +229,16 @@
                     visibility: hidden; // but, control buttons hidden.
                 }
             }
+        }
+        &:fullscreen {
+            .video-container-controls-overlay {
+                .video-container-header {
+                    .button-remove {
+                        display: none;
+                    }
+                }
+            }
+
         }
     }
 

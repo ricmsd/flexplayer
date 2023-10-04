@@ -1,4 +1,5 @@
-import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, ElementRef, HostListener, Inject, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Slider } from 'primeng/slider';
 
@@ -48,7 +49,11 @@ export class AppComponent implements OnInit {
 
   @ViewChildren('video') videoQuery?: QueryList<ElementRef<HTMLVideoElement>>;
 
-  constructor(private titleService: Title) {
+  public playbackAfterExitingFullscreen: HTMLVideoElement[] = [];
+
+  constructor(
+    private titleService: Title,
+    @Inject(DOCUMENT) public document: Document) {
     this.loadPlayerStatus();
     this.resizeVideoContainer();
     this.updateTitle();
@@ -296,6 +301,24 @@ export class AppComponent implements OnInit {
       videoFile.currentTime = videoFile.range[0];
       video.currentTime = videoFile.range[0] / 100;
       video.play();
+    }
+  }
+
+  public onContainerFullscreenChange(fullscreenVideo: HTMLVideoElement): void {
+    if (!!document.fullscreenElement) {
+      this.playbackAfterExitingFullscreen = [];
+      this.videoQuery?.forEach(videoRef => {
+        const video = videoRef.nativeElement;
+        if (video !== fullscreenVideo && !video.paused) {
+          video.pause();
+          this.playbackAfterExitingFullscreen.push(video);
+        }
+      });
+    } else {
+      this.playbackAfterExitingFullscreen.forEach(video => {
+        video.play();
+      });
+      this.playbackAfterExitingFullscreen = [];
     }
   }
 }

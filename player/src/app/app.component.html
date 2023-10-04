@@ -1,8 +1,9 @@
 <div class="app-body">
   <ng-container *ngFor="let videoFile of videoFiles">
-    <div class="video-container"
+    <div #container class="video-container"
       [ngStyle]="{'width': videoContainerWidth, 'height': videoContainerHeight}"
-      [ngClass]="{'slider-dragging': slider.dragging || range.dragging, 'aspect-16-9': videoFile.is169, 'playing-failed': !!video.error}">
+      [ngClass]="{'slider-dragging': slider.dragging || range.dragging, 'aspect-16-9': videoFile.is169, 'playing-failed': !!video.error}"
+      (fullscreenchange)="onContainerFullscreenChange(video)">
 
       <video #video [src]="videoFile.url"
         [ngStyle]="{'width': videoWidth, 'height': videoHeight}"
@@ -54,6 +55,10 @@
             <p-button icon="bi bi-repeat" styleClass="p-button-text" class="button-loop"
               (onClick)="videoFile.loop = !videoFile.loop"></p-button>
             <i *ngIf="!videoFile.loop" class="bi-slash-lg icon-slash"></i>
+            <p-button *ngIf="!document.fullscreenElement" icon="bi bi-fullscreen" styleClass="p-button-text" class="button-fullscreen"
+              (onClick)="container.requestFullscreen()"></p-button>
+            <p-button *ngIf="!!document.fullscreenElement" icon="bi bi-fullscreen-exit" styleClass="p-button-text" class="button-fullscreen-exit"
+              (onClick)="document.exitFullscreen()"></p-button>
           </div>
         </div>
       </div>
