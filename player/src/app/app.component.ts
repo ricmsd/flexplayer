@@ -202,6 +202,9 @@ export class AppComponent implements OnInit {
   }
 
   private resizeVideoContainer(): void {
+    // The value of getClientRects() is not an integer but an exact value; it seems that this value is used for placement by flex.
+    // Since clientWidth is an integer, the calculation using it may result in misalignment.
+    // Therefore, the width of div.app-body is set to 100% + 10px to avoid unintended flex-wrap.
     this.clientWidth = document.body.clientWidth;
     const width = this.clientWidth / this.videoContainerCount;
     const height = (width / 16) * 9;
@@ -214,6 +217,8 @@ export class AppComponent implements OnInit {
     // (Cause of the gap is unknown)
     this.videoWidth = Math.floor(width + 1) + 'px';
     this.videoHeight = Math.floor(height + 1) + 'px';
+
+    // console.info(`resizeVideoContainer: body=${this.clientWidth}, container=${this.videoContainerWidth}:${this.videoContainerHeight}, video=${this.videoWidth}:${this.videoHeight}`);
   }
 
   public onLoadedMetadata(video: HTMLVideoElement, videoFile: VideoFile): void {
