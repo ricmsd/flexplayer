@@ -6,6 +6,7 @@ import { Slider } from 'primeng/slider';
 declare var window: {
   electronAPI: {
     pathToFileURL: (path: string) => Promise<string>;
+    handleRemoveAllVideo: (callback: () => void) => void;
   };
 }
 
@@ -57,6 +58,11 @@ export class AppComponent implements OnInit {
     this.loadPlayerStatus();
     this.resizeVideoContainer();
     this.updateTitle();
+    window.electronAPI.handleRemoveAllVideo(() => {
+      this.videoFiles = [];
+      this.savePlayerStatus();
+      this.updateTitle();
+    });
   }
 
   ngOnInit(): void {

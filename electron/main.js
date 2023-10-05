@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const path = require('node:path');
 const url = require('node:url');
 const Store = require('electron-store');
@@ -18,6 +18,27 @@ const createWindow = () => {
     store.set('browserWindow.width', size[0]);
     store.set('browserWindow.height', size[1]);
   });
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate([
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Remove all video',
+          click: () => win.webContents.send('remove-all-video')
+        }
+      ],
+    },
+    {
+      label: 'Development',
+      submenu: [
+        {
+          label: 'DevTools',
+          role: 'toggleDevTools'
+        }
+      ]
+    }
+  ]));
 
   win.loadFile('player/index.html');
   //win.webContents.openDevTools();
