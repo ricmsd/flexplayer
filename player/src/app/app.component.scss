@@ -64,11 +64,19 @@
             overflow: hidden;
 
             ::ng-deep button.p-button {
-                width: 2rem;
-                padding: 0.5rem 0;
+                width: 32px;
+                height: 32px;
+                padding: 0 0;
 
                 .p-button-icon {
                     color: #dee2e6;
+                }
+
+                &:focus {
+                    box-shadow: none;
+                }
+                &:active {
+                    background: transparent;
                 }
             }
             .video-container-header {
@@ -116,6 +124,8 @@
 
                 .video-container-controls-left {
                     width: calc(32px * 2);
+                    display: flex;
+                    align-items: center;
                 }
                 .video-container-controls-center {
                     flex-grow: 1;
@@ -199,10 +209,9 @@
                     }
                 }
                 .video-container-controls-right {
-                    width: 64px;
+                    width: calc(32px * 2);
                     position: relative;
                     display: flex;
-                    justify-content: center;
                     align-items: center;
 
                     .icon-slash {
