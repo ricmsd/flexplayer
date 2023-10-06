@@ -381,9 +381,12 @@ export class AppComponent implements OnInit {
     this.draggingVideoFile = videoFile;
   }
 
+  public onContainerDragEnd(event: DragEvent): void {
+    this.draggingVideoFile = undefined;
+  }
+
   public onContainerDrop(event: DragEvent, droppedVideoFile: VideoFile, insertPosition: 'left' | 'right'): void {
     if (!this.draggingVideoFile || droppedVideoFile === this.draggingVideoFile) {
-      this.draggingVideoFile = undefined;
       return;
     }
     const ordered: VideoFile[] = [];
@@ -403,7 +406,6 @@ export class AppComponent implements OnInit {
         ordered.push(i);
       }
     }
-    this.draggingVideoFile = undefined;
     this.videoFiles = ordered;
     this.savePlayerStatus();
   }

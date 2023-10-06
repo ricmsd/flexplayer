@@ -6,7 +6,7 @@
       (fullscreenchange)="onContainerFullscreenChange(video)"
       (mousemove)="onContainerMousemove(container)"
       (mouseenter)="onContainerMousemove(container)"
-      draggable="true" (dragstart)="onContainerDragStart($event, video, videoFile)">
+      draggable="true" (dragstart)="onContainerDragStart($event, video, videoFile)" (dragend)="onContainerDragEnd($event)">
 
       <video #video class="video-main" [src]="videoFile.url"
         [ngStyle]="{'width': videoWidth, 'height': videoHeight}"
