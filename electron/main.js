@@ -30,6 +30,15 @@ const createWindow = () => {
       ],
     },
     {
+      label: 'View',
+      submenu: [
+        {
+          label: 'Fullscreen',
+          role: 'togglefullscreen'
+        }
+      ]
+    },
+    {
       label: 'Development',
       submenu: [
         {
