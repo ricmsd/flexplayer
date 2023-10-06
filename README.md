@@ -9,6 +9,7 @@ FlexPlayer plays multiple video files in a grid. FlexPlayer is a desktop applica
 - Loop playback of In/Out range.
 - Full screen playback of individual videos (full screen button at bottom right).
 - Full screen playback without leaving the grid (F11 key).
+- Video repositioning by D&D
 
 ## Codec and Container Support
 See [https://www.chromium.org/audio-video/](https://www.chromium.org/audio-video/).
