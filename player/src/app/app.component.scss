@@ -315,4 +315,85 @@
             }
         }
     }
+
+    .video-container {
+        @keyframes fadeinleft {
+            0% {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-100%);
+            }
+        }
+        .video-container-drop-area-left {
+            position: absolute;
+            display: none;
+            width: 30%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            i {
+                visibility: hidden;
+                pointer-events: none;
+                animation: fadeinleft 0.5s linear;
+                animation-iteration-count: infinite;
+            }
+        }
+        @keyframes fadeinright {
+            0% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(100%);
+            }
+        }
+        .video-container-drop-area-right {
+            position: absolute;
+            display: none;
+            width: 30%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            i {
+                visibility: hidden;
+                pointer-events: none;
+                animation: fadeinright 0.5s linear;
+                animation-iteration-count: infinite;
+            }
+        }
+        &.video-dragging {
+            .video-container-drop-area-left {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #dee2e6;
+                &.dragenter {
+                    background-color: rgba(0, 0, 0, 0.2);
+                    i {
+                        visibility: visible;
+                    }
+                }
+            }
+            .video-container-drop-area-right {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #dee2e6;
+                &.dragenter {
+                    background-color: rgba(0, 0, 0, 0.2);
+                    i {
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+    }
+}
+#canvas-for-dragimage {
+    position: absolute;
+    top: -1000px;
 }

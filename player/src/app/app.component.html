@@ -2,10 +2,11 @@
   <ng-container *ngFor="let videoFile of videoFiles">
     <div #container class="video-container"
       [ngStyle]="{'width': videoContainerWidth, 'height': videoContainerHeight}"
-      [ngClass]="{'slider-dragging': slider.dragging || range.dragging, 'aspect-16-9': videoFile.is169, 'playing-failed': !!video.error}"
+      [ngClass]="{'slider-dragging': slider.dragging || range.dragging, 'aspect-16-9': videoFile.is169, 'playing-failed': !!video.error, 'video-dragging': !!draggingVideoFile}"
       (fullscreenchange)="onContainerFullscreenChange(video)"
       (mousemove)="onContainerMousemove(container)"
-      (mouseenter)="onContainerMousemove(container)">
+      (mouseenter)="onContainerMousemove(container)"
+      draggable="true" (dragstart)="onContainerDragStart($event, video, videoFile)">
 
       <video #video class="video-main" [src]="videoFile.url"
         [ngStyle]="{'width': videoWidth, 'height': videoHeight}"
@@ -72,6 +73,22 @@
         <div class="video-controls-slider-time">{{getHHMMSS(miniVideo.currentTime)}}</div>
       </div>
 
+      <div #dropAreaLeft class="video-container-drop-area-left"
+        (dragenter)="dropAreaLeft.classList.add('dragenter')"
+        (dragleave)="dropAreaLeft.classList.remove('dragenter')"
+        (drop)="dropAreaLeft.classList.remove('dragenter'); onContainerDrop($event, videoFile, 'left')">
+        <i class="bi bi-chevron-double-left"></i>
+      </div>
+
+      <div #dropAreaRight class="video-container-drop-area-right"
+        (dragenter)="dropAreaRight.classList.add('dragenter')"
+        (dragleave)="dropAreaRight.classList.remove('dragenter')"
+        (drop)="dropAreaRight.classList.remove('dragenter'); onContainerDrop($event, videoFile, 'right')">
+        <i class="bi bi-chevron-double-right"></i>
+      </div>
+
     </div>
   </ng-container>
 </div>
+
+<canvas id="canvas-for-dragimage"></canvas>

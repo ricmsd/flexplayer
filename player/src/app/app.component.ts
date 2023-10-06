@@ -51,6 +51,7 @@ export class AppComponent implements OnInit {
   @ViewChildren('video') videoQuery?: QueryList<ElementRef<HTMLVideoElement>>;
 
   public playbackAfterExitingFullscreen: HTMLVideoElement[] = [];
+  public draggingVideoFile?: VideoFile;
 
   constructor(
     private titleService: Title,
@@ -352,5 +353,58 @@ export class AppComponent implements OnInit {
       container.classList.remove('mousemove');
       (<any>container)['_mousemove_timer_id'] = null;
     }, 5000);
+  }
+
+  public onContainerDragStart(event: DragEvent, video: HTMLVideoElement, videoFile: VideoFile): void {
+    if (!event.dataTransfer) {
+      return;
+    }
+
+    // set video screenshot to drag image.
+    const canvas = <HTMLCanvasElement>document.getElementById('canvas-for-dragimage');
+    let width = 128;
+    let height = 128;
+    if (video.videoWidth > video.videoHeight) {
+      height = video.videoHeight * (width / video.videoWidth);
+    } else {
+      width = video.videoWidth * (height / video.videoHeight);
+    }
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext('2d');
+    context?.drawImage(video, 0, 0, canvas.width, canvas.height);
+    event.dataTransfer.setDragImage(canvas, width/2, height/2);
+
+    // set mouse cursor effect
+    event.dataTransfer.effectAllowed = 'move';
+
+    this.draggingVideoFile = videoFile;
+  }
+
+  public onContainerDrop(event: DragEvent, droppedVideoFile: VideoFile, insertPosition: 'left' | 'right'): void {
+    if (!this.draggingVideoFile || droppedVideoFile === this.draggingVideoFile) {
+      this.draggingVideoFile = undefined;
+      return;
+    }
+    const ordered: VideoFile[] = [];
+    for (let i of this.videoFiles) {
+      if (i === this.draggingVideoFile) {
+        continue;
+      }
+      if (i === droppedVideoFile) {
+        if (insertPosition === 'left') {
+          ordered.push(this.draggingVideoFile);
+        }
+        ordered.push(i);
+        if (insertPosition === 'right') {
+          ordered.push(this.draggingVideoFile);
+        }
+      } else {
+        ordered.push(i);
+      }
+    }
+    this.draggingVideoFile = undefined;
+    this.videoFiles = ordered;
+    this.savePlayerStatus();
   }
 }
