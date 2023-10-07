@@ -8,6 +8,7 @@ FlexPlayer plays multiple video files in a grid. FlexPlayer is a desktop applica
 - Spacebar to play/stop all videos.
 - Loop playback of In/Out range.
 - Full screen playback of individual videos (full screen button at bottom right).
+  - Left and right arrows to switch to other Video
 - Full screen playback without leaving the grid (F11 key).
 - Video repositioning by D&D
 - Other functions can be executed from Menu (Alt key)
