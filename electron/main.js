@@ -25,14 +25,18 @@ const createWindow = () => {
       label: 'File',
       submenu: [
         {
-          label: 'Remove all video',
-          click: () => win.webContents.send('remove-all-video')
+          label: 'Quit',
+          role: 'quit'
         }
       ],
     },
     {
       label: 'View',
       submenu: [
+        {
+          label: 'Remove all video',
+          click: () => win.webContents.send('remove-all-video')
+        },
         {
           label: 'Fullscreen',
           role: 'togglefullscreen'

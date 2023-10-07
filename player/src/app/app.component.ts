@@ -48,6 +48,7 @@ export class AppComponent implements OnInit {
   public videoWidth?: string;
   public videoHeight?: string;
 
+  @ViewChildren('container') containerQuery?: QueryList<ElementRef<HTMLDivElement>>;
   @ViewChildren('video') videoQuery?: QueryList<ElementRef<HTMLVideoElement>>;
 
   public playbackAfterExitingFullscreen: HTMLVideoElement[] = [];
@@ -179,7 +180,7 @@ export class AppComponent implements OnInit {
   }
 
   @HostListener('window:keydown.space', ['$event'])
-  public onKeydownSpace(event: any): void {
+  public onKeydownSpace(event: KeyboardEvent): void {
     if (!!document.fullscreenElement) {
       const container = document.fullscreenElement;
       const video = <HTMLVideoElement>container.querySelector('.video-main');
@@ -199,6 +200,37 @@ export class AppComponent implements OnInit {
           videoRef.nativeElement.play();
         }
       });
+    }
+  }
+
+  @HostListener('window:keydown.arrowleft', ['$event'])
+  @HostListener('window:keydown.arrowRight', ['$event'])
+  public onKeydownLeftRight(event: KeyboardEvent): void {
+    if (!document.fullscreenElement) {
+      return;
+    }
+    for (let i = 0; i < (this.containerQuery?.length || 0); i++) {
+      if (this.containerQuery?.get(i)?.nativeElement !== this.document.fullscreenElement) {
+        continue;
+      }
+
+      let nextFullscreenIndex = -1;
+      if (event.code === 'ArrowLeft' && i > 0) {
+        nextFullscreenIndex = i - 1;
+      } else if (event.code === 'ArrowRight' && i < this.containerQuery.length - 1) {
+        nextFullscreenIndex = i + 1;
+      }
+
+      if (nextFullscreenIndex >= 0) {
+        const fullscreenVideo: HTMLVideoElement = <HTMLVideoElement>document.fullscreenElement.querySelector('.video-main');
+        if (!fullscreenVideo.paused) {
+          this.playbackAfterExitingFullscreen.push(fullscreenVideo);
+          fullscreenVideo.pause();
+        }
+        this.containerQuery?.get(nextFullscreenIndex)?.nativeElement.requestFullscreen();
+        // Then requested element's fullscreenchange event handler (onContainerFullscreenChange()) will be called.
+      }
+      break;
     }
   }
 
@@ -328,14 +360,22 @@ export class AppComponent implements OnInit {
 
   public onContainerFullscreenChange(fullscreenVideo: HTMLVideoElement): void {
     if (!!document.fullscreenElement) {
-      this.playbackAfterExitingFullscreen = [];
-      this.videoQuery?.forEach(videoRef => {
-        const video = videoRef.nativeElement;
-        if (video !== fullscreenVideo && !video.paused) {
-          video.pause();
-          this.playbackAfterExitingFullscreen.push(video);
+      if (this.playbackAfterExitingFullscreen.length > 0) {
+        // push arrow key in fullscreen mode.
+        const i = this.playbackAfterExitingFullscreen.findIndex(i => i === fullscreenVideo);
+        if (i >= 0) {
+          this.playbackAfterExitingFullscreen[i].play();
+          this.playbackAfterExitingFullscreen.splice(i, 1);
         }
-      });
+      } else {
+        this.videoQuery?.forEach(videoRef => {
+          const video = videoRef.nativeElement;
+          if (video !== fullscreenVideo && !video.paused) {
+            video.pause();
+            this.playbackAfterExitingFullscreen.push(video);
+          }
+        });
+      }
     } else {
       this.playbackAfterExitingFullscreen.forEach(video => {
         video.play();
