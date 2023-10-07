@@ -24,7 +24,7 @@ See [https://www.chromium.org/audio-video/](https://www.chromium.org/audio-video
 ![FlexPlayer](https://raw.githubusercontent.com/ricmsd/flexplayer/main/docs/screenshot-4.png)
 
 ## How to install
-Download the latest version of the exe from the [Releases page](https://github.com/ricmsd/flexplayer/releases) and install it, or refer to the "Hot to build" section below to build it yourself and generate an installer.
+Download the latest version of the exe from the [Releases page](https://github.com/ricmsd/flexplayer/releases) and install it, or refer to the "How to build" section below to build it yourself and generate an installer.
 
 ## How to build
 ### Requirements
