@@ -4,10 +4,10 @@
   "description": "flexplayer",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
     "forge:start": "electron-forge start",
     "forge:package": "electron-forge package",
-    "forge:make": "electron-forge make"
+    "forge:make": "electron-forge make",
+    "forge:publish": "electron-forge publish"
   },
   "author": "ricmsd",
   "license": "MIT",
@@ -18,10 +18,20 @@
     "@electron-forge/maker-squirrel": "^6.4.2",
     "@electron-forge/maker-zip": "^6.4.2",
     "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
+    "@electron-forge/publisher-github": "^6.4.2",
     "electron": "^26.2.3"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
-    "electron-store": "^8.1.0"
-  }
+    "electron-store": "^8.1.0",
+    "update-electron-app": "^2.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ricmsd/flexplayer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ricmsd/flexplayer/issues"
+  },
+  "homepage": "https://github.com/ricmsd/flexplayer#readme"
 }

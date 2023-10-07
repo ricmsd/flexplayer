@@ -23,6 +23,9 @@ See [https://www.chromium.org/audio-video/](https://www.chromium.org/audio-video
 
 ![FlexPlayer](https://raw.githubusercontent.com/ricmsd/flexplayer/main/docs/screenshot-4.png)
 
+## How to install
+Download the latest version of the exe from the [Releases page](https://github.com/ricmsd/flexplayer/releases) and install it, or refer to the "Hot to build" section below to build it yourself and generate an installer.
+
 ## How to build
 ### Requirements
 - Node.js (Tested on v18.17.1)
@@ -39,4 +42,4 @@ See [https://www.chromium.org/audio-video/](https://www.chromium.org/audio-video
 
 If the above is successful, the installer will output `flexplayer-X.X.X Setup.exe` (where `X.X.X` is the version number) under `flexplayer/electron/out`. Run this to install.
 
-If you want to try it out without installing it, run `npm run start` instead of `npm run forge:make`.
+If you want to try it out without installing it, run `npm run forge:start` instead of `npm run forge:make`.
