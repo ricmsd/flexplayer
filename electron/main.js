@@ -1,9 +1,21 @@
 require('update-electron-app')()
-const { app, BrowserWindow, ipcMain, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
 const path = require('node:path');
 const url = require('node:url');
 const Store = require('electron-store');
 const store = new Store();
+
+const customAboutPanel = () => {
+  dialog.showMessageBox({
+    title: 'FlexPlayer',
+    message: `FlexPlayer ${process.env.npm_package_version}`,
+    detail:
+      `Chrominium: ${process.versions.chrome}\n` +
+      `Electron: ${process.versions.electron}\n` +
+      `Node.js: ${process.versions.node}\n` +
+      `V8: ${process.versions.v8}`
+  });
+};
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -44,11 +56,15 @@ const createWindow = () => {
       ]
     },
     {
-      label: 'Development',
+      label: 'Help',
       submenu: [
         {
           label: 'DevTools',
           role: 'toggleDevTools'
+        },
+        {
+          label: 'About',
+          click: customAboutPanel
         }
       ]
     }
