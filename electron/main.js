@@ -7,6 +7,7 @@ const store = new Store();
 
 const customAboutPanel = () => {
   dialog.showMessageBox({
+    type: 'info',
     title: 'FlexPlayer',
     message: `FlexPlayer ${process.env.npm_package_version}`,
     detail:
@@ -17,8 +18,21 @@ const customAboutPanel = () => {
   });
 };
 
-const createWindow = () => {
-  const win = new BrowserWindow({
+const createLicenseWindow = (parentWindow) => {
+  const licenseWindow = new BrowserWindow({
+    parent: parentWindow,
+    modal: true,
+    show: false,
+    title: 'Open Source Licenses',
+    autoHideMenuBar: true,
+  });
+  licenseWindow.loadFile('licenses.html');
+  licenseWindow.setMenu(null);
+  return licenseWindow;
+};
+
+const createMainWindow = () => {
+  const mainWindow = new BrowserWindow({
     width: store.get('browserWindow.width') || 800,
     height: store.get('browserWindow.height') || 600,
     webPreferences: {
@@ -26,13 +40,13 @@ const createWindow = () => {
     },
     autoHideMenuBar: true,
   })
-  win.on('resize', function() {
-    const size = win.getSize();
+  mainWindow.on('resize', function() {
+    const size = mainWindow.getSize();
     store.set('browserWindow.width', size[0]);
     store.set('browserWindow.height', size[1]);
   });
-
-  Menu.setApplicationMenu(Menu.buildFromTemplate([
+  mainWindow.loadFile('player/index.html');
+  mainWindow.setMenu(Menu.buildFromTemplate([
     {
       label: 'File',
       submenu: [
@@ -47,7 +61,7 @@ const createWindow = () => {
       submenu: [
         {
           label: 'Remove all video',
-          click: () => win.webContents.send('remove-all-video')
+          click: () => mainWindow.webContents.send('remove-all-video')
         },
         {
           label: 'Fullscreen',
@@ -63,6 +77,10 @@ const createWindow = () => {
           role: 'toggleDevTools'
         },
         {
+          label: 'OSS Licenses',
+          click: () => createLicenseWindow(mainWindow).show()
+        },
+        {
           label: 'About',
           click: customAboutPanel
         }
@@ -70,8 +88,7 @@ const createWindow = () => {
     }
   ]));
 
-  win.loadFile('player/index.html');
-  //win.webContents.openDevTools();
+  return mainWindow;
 };
 
 app.whenReady().then(() => {
@@ -79,13 +96,14 @@ app.whenReady().then(() => {
     return url.pathToFileURL(path).href;
   });
 
-  createWindow();
+  createMainWindow();
 
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
-  });
+  // TODO: only for MacOS?
+  //app.on('activate', () => {
+  //  if (BrowserWindow.getAllWindows().length === 0) {
+  //    createMainWindow();
+  //  }
+  //});
 });
 
 app.on('window-all-closed', () => {
