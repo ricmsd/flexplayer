@@ -7,8 +7,8 @@
 }
 
 .empty-message {
-    width: 95%;
-    height: 95%;
+    width: calc(100% - 1em);
+    height: calc(100% - 1em);
     margin: 0 auto;
     color: #dee2e6;
     border: 1px dashed #9DA8B3;
@@ -17,7 +17,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 1.5em;
     opacity: 0.8;
 }
 
