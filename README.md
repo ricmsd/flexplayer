@@ -45,3 +45,9 @@ Download the latest version of the exe from the [Releases page](https://github.c
 If the above is successful, the installer will output `flexplayer-X.X.X Setup.exe` (where `X.X.X` is the version number) under `flexplayer/electron/out`. Run this to install.
 
 If you want to try it out without installing it, run `npm run forge:start` instead of `npm run forge:make`.
+
+## TODO
+- Add volume control
+- Improve mini player (The thumbnail that is displayed when setting seek or In/Out points)
+- D&D of folder
+- Application icon replacement
